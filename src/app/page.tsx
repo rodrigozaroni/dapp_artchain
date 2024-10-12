@@ -1,24 +1,24 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-"use client";
-import React, { useState, useEffect } from 'react';
-import { Search, Calendar, MapPin, LogOut, QrCode, Filter } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import Image from 'next/image';
+"use client"; // Componente Renderizador
+import React, { useState, useEffect } from "react";
+import { Search, Calendar, MapPin, LogOut, QrCode, Filter } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+// import { Select } from '@/components/ui/select';
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
-// Interface for Event
-interface Event {
-  id: number;
+// Interface para as Props:
+interface EventCardProps {
   title: string;
   date: string;
   location: string;
   category: string;
   imageUrl: string;
-}
-
-// Interface for EventCardProps
-interface EventCardProps extends Event {
   isUserEvent?: boolean;
 }
 
@@ -33,16 +33,10 @@ const EventCard = ({
 }: EventCardProps) => (
   <div
     className={`bg-white rounded-lg shadow-md overflow-hidden ${
-      isUserEvent ? 'border-2 border-blue-500' : ''
+      isUserEvent ? "border-2 border-blue-500" : ""
     }`}
   >
-    <Image
-      src={imageUrl}
-      alt={title}
-      width={400}
-      height={192}
-      className="w-full h-48 object-cover"
-    />
+    <img src={imageUrl} alt={title} className="w-full h-48 object-cover" />
     <div className="p-4">
       <h3 className="text-xl font-semibold mb-2">{title}</h3>
       <div className="flex items-center text-gray-600 mb-2">
@@ -66,14 +60,15 @@ const EventCard = ({
   </div>
 );
 
-// Interface for QRCodeScannerProps
+//
+
 interface QRCodeScannerProps {
   onScan: (qrCode: string) => void;
 }
 
 // QRCodeScanner component definition
 const QRCodeScanner = ({ onScan }: QRCodeScannerProps) => {
-  const [qrCode, setQrCode] = useState<string>('');
+  const [qrCode, setQrCode] = useState("");
 
   const handleScan = () => {
     onScan(qrCode);
@@ -92,7 +87,7 @@ const QRCodeScanner = ({ onScan }: QRCodeScannerProps) => {
   );
 };
 
-// Interface for AttendanceCertificateProps
+//
 interface AttendanceCertificateProps {
   eventTitle: string;
   attendeeName: string;
@@ -119,31 +114,41 @@ const AttendanceCertificate = ({
   </div>
 );
 
+// Defina a interface para os objetos de evento
+interface Event {
+  id: number;
+  title: string;
+  date: string;
+  location: string;
+  category: string;
+  imageUrl: string;
+}
+
 const ArtChainFrontend = () => {
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [dateFilter, setDateFilter] = useState<string>('');
-  const [categoryFilter, setCategoryFilter] = useState<string>('');
-  const [locationFilter, setLocationFilter] = useState<string>('');
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [isLoggedIn, setIsLoggedIn] = useState<boolean>(false);
-  const [username, setUsername] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState("");
+  const [dateFilter, setDateFilter] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [locationFilter, setLocationFilter] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [userEvents, setUserEvents] = useState<Event[]>([]);
-  const [showQRScanner, setShowQRScanner] = useState<boolean>(false);
-  const [showCertificate, setShowCertificate] = useState<boolean>(false);
-  const [certificateData, setCertificateData] = useState<AttendanceCertificateProps | null>(null);
+  const [showQRScanner, setShowQRScanner] = useState(false);
+  const [showCertificate, setShowCertificate] = useState(false);
+  const [certificateData, setCertificateData] =
+    useState<AttendanceCertificateProps | null>(null);
 
   const itemsPerPage = 6;
 
   const currentDate = new Date();
-  const nextWeek = new Date(
-    currentDate.getTime() + 7 * 24 * 60 * 60 * 1000
-  );
+  const nextWeek = new Date(currentDate.getTime() + 7 * 24 * 60 * 60 * 1000);
 
   const formatDate = (date: Date): string => {
-    return date.toISOString().split('T')[0];
+    return date.toISOString().split("T")[0];
   };
 
+  //
   const mockUserEvents: Event[] = [
     {
       id: 101,
@@ -172,12 +177,93 @@ const ArtChainFrontend = () => {
       date: formatDate(currentDate),
       location: "Rio de Janeiro",
       category: "Arte",
-      imageUrl: "https://www.infura.io/_next/image?...",
+      imageUrl:
+        "https://www.infura.io/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2F6g6hg01fg28j%2FKFPYuRLDjMt5LBDcfzWMU%2F04ecf96366ef87c4f5f3dee724089175%2Fdet-bg.png&w=1080&q=75",
     },
-    // ... other events
+    {
+      id: 2,
+      title: "Sinfonia Digital",
+      date: formatDate(nextWeek),
+      location: "São Paulo",
+      category: "Música",
+      imageUrl:
+        "https://www.infura.io/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2F6g6hg01fg28j%2FKFPYuRLDjMt5LBDcfzWMU%2F04ecf96366ef87c4f5f3dee724089175%2Fdet-bg.png&w=1080&q=75",
+    },
+    {
+      id: 3,
+      title: "Exposição de Fotos",
+      date: "2024-10-01",
+      location: "Belo Horizonte",
+      category: "Fotografia",
+      imageUrl:
+        "https://www.infura.io/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2F6g6hg01fg28j%2FKFPYuRLDjMt5LBDcfzWMU%2F04ecf96366ef87c4f5f3dee724089175%2Fdet-bg.png&w=1080&q=75",
+    },
+    {
+      id: 4,
+      title: "Abertura da Galeria de Arte",
+      date: "2024-07-20",
+      location: "Rio de Janeiro",
+      category: "Arte",
+      imageUrl:
+        "https://www.infura.io/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2F6g6hg01fg28j%2FKFPYuRLDjMt5LBDcfzWMU%2F04ecf96366ef87c4f5f3dee724089175%2Fdet-bg.png&w=1080&q=75",
+    },
+    {
+      id: 5,
+      title: "ArtChain Hackathon",
+      date: "2024-11-10",
+      location: "Rio de Janeiro",
+      category: "Arte",
+      imageUrl:
+        "https://www.infura.io/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2F6g6hg01fg28j%2FKFPYuRLDjMt5LBDcfzWMU%2F04ecf96366ef87c4f5f3dee724089175%2Fdet-bg.png&w=1080&q=75",
+    },
+    {
+      id: 6,
+      title: "Workshop de Artes",
+      date: "2024-09-15",
+      location: "Petrópolis",
+      category: "Arte",
+      imageUrl:
+        "https://www.infura.io/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2F6g6hg01fg28j%2FKFPYuRLDjMt5LBDcfzWMU%2F04ecf96366ef87c4f5f3dee724089175%2Fdet-bg.png&w=1080&q=75",
+    },
+    {
+      id: 7,
+      title: "Exposição de Fotos",
+      date: "2024-08-30",
+      location: "Curitiba",
+      category: "Fotografia",
+      imageUrl:
+        "https://www.infura.io/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2F6g6hg01fg28j%2FKFPYuRLDjMt5LBDcfzWMU%2F04ecf96366ef87c4f5f3dee724089175%2Fdet-bg.png&w=1080&q=75",
+    },
+    {
+      id: 8,
+      title: "Digital Artweek",
+      date: "2024-10-20",
+      location: "Salvador",
+      category: "Arte",
+      imageUrl:
+        "https://www.infura.io/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2F6g6hg01fg28j%2FKFPYuRLDjMt5LBDcfzWMU%2F04ecf96366ef87c4f5f3dee724089175%2Fdet-bg.png&w=1080&q=75",
+    },
+    {
+      id: 9,
+      title: "Visita ao Teatro Municipal",
+      date: formatDate(currentDate),
+      location: "Rio de Janeiro",
+      category: "Teatro",
+      imageUrl:
+        "https://www.infura.io/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2F6g6hg01fg28j%2FKFPYuRLDjMt5LBDcfzWMU%2F04ecf96366ef87c4f5f3dee724089175%2Fdet-bg.png&w=1080&q=75",
+    },
+    {
+      id: 10,
+      title: "Blockchain Week",
+      date: formatDate(nextWeek),
+      location: "Online",
+      category: "Internacional",
+      imageUrl:
+        "https://www.infura.io/_next/image?url=https%3A%2F%2Fimages.ctfassets.net%2F6g6hg01fg28j%2FKFPYuRLDjMt5LBDcfzWMU%2F04ecf96366ef87c4f5f3dee724089175%2Fdet-bg.png&w=1080&q=75",
+    },
   ];
 
-  const filteredEvents = dummyEvents.filter((event: Event) => {
+  const filteredEvents = dummyEvents.filter((event) => {
     return (
       event.title.toLowerCase().includes(searchTerm.toLowerCase()) &&
       (dateFilter ? event.date === dateFilter : true) &&
@@ -196,24 +282,24 @@ const ArtChainFrontend = () => {
 
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (username === 'artchain' && password === 'artchain') {
+    if (username === "artchain" && password === "artchain") {
       setIsLoggedIn(true);
       setUserEvents(mockUserEvents);
     } else {
-      alert('Usuário Inválido');
+      alert("Usuário Inválido");
     }
   };
 
   const handleLogout = () => {
     setIsLoggedIn(false);
-    setUsername('');
-    setPassword('');
+    setUsername("");
+    setPassword("");
     setUserEvents([]);
   };
 
   const handleQRScan = (qrCode: string) => {
     const event = [...userEvents, ...dummyEvents].find(
-      (e: Event) => e.id.toString() === qrCode
+      (e) => e.id.toString() === qrCode
     );
     if (event) {
       setCertificateData({
@@ -223,7 +309,7 @@ const ArtChainFrontend = () => {
       });
       setShowCertificate(true);
     } else {
-      alert('QR Code Inválido');
+      alert("QR Code Inválido");
     }
     setShowQRScanner(false);
   };
@@ -234,7 +320,190 @@ const ArtChainFrontend = () => {
 
   return (
     <div className="bg-gray-100 min-h-screen">
-      {/* ... your JSX code */}
+      <header className="bg-blue-600 text-white p-4">
+        <div className="container mx-auto flex justify-between items-center">
+          <h1 className="text-2xl font-bold">ArtChain - Eventos de Arte</h1>
+          <nav>
+            <ul className="flex space-x-4">
+              <li>
+                <a href="#" className="hover:text-blue-200">
+                  Home
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-200">
+                  Acesso IES
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-200">
+                  Meus Comprovantes
+                </a>
+              </li>
+              <li>
+                <a href="#" className="hover:text-blue-200">
+                  Checkin
+                </a>
+              </li>
+              {isLoggedIn ? (
+                <li>
+                  <button
+                    onClick={handleLogout}
+                    className="flex items-center hover:text-blue-200"
+                  >
+                    <LogOut className="w-4 h-4 mr-1" />
+                    Logout
+                  </button>
+                </li>
+              ) : (
+                <li>
+                  <a href="#" className="hover:text-blue-200">
+                    Login
+                  </a>
+                </li>
+              )}
+            </ul>
+          </nav>
+        </div>
+      </header>
+
+      <main className="container mx-auto py-8">
+        {!isLoggedIn && (
+          <form
+            onSubmit={handleLogin}
+            className="mb-8 p-4 bg-white rounded-lg shadow-md"
+          >
+            <h2 className="text-xl font-semibold mb-4">Login</h2>
+            <div className="flex space-x-4">
+              <Input
+                type="text"
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="flex-grow"
+              />
+              <Input
+                type="password"
+                placeholder="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="flex-grow"
+              />
+              <Button type="submit">ENTRAR</Button>
+            </div>
+          </form>
+        )}
+
+        <div className="mb-8">
+          <div className="flex items-center bg-white rounded-lg shadow-md">
+            <Input
+              type="text"
+              placeholder="Procurar Eventos..."
+              className="flex-grow rounded-l-lg"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <Button className="rounded-r-lg">
+              <Search className="w-6 h-6" />
+            </Button>
+          </div>
+        </div>
+
+        <div className="mb-8 flex space-x-4">
+          <input
+            type="date"
+            value={dateFilter}
+            onChange={(e) => setDateFilter(e.target.value)}
+            className="flex-grow"
+          />
+          <Filter className="w-6 h-6 mr-2" />
+          <select
+            value={categoryFilter}
+            onChange={(e) => setCategoryFilter(e.target.value)}
+            className="flex-grow"
+          >
+            <option value="">Todas Categorias</option>
+            <option value="Arte">Arte</option>
+            <option value="Música">Música</option>
+            <option value="Fotografia">Fotografia</option>
+            <option value="Teatro">Teatro</option>
+            <option value="Internacional">Internacional</option>
+          </select>
+          <Filter className="w-6 h-6 mr-2" />
+          <select
+            value={locationFilter}
+            onChange={(e) => setLocationFilter(e.target.value)}
+            className="flex-grow"
+          >
+            <option value="">Todas</option>
+            <option value="Online">Online</option>
+            <option value="Rio de Janeiro">Rio</option>
+            <option value="São Paulo">SAMPA</option>
+            <option value="Petrópolis">Petrópolis</option>
+            <option value="Salvador">Salvador</option>
+            <option value="Curitiba">Curitiba</option>
+          </select>
+          <Filter className="w-6 h-6 mr-2" />
+        </div>
+
+        {isLoggedIn && (
+          <div className="mb-8">
+            <h2 className="text-2xl font-bold mb-4">Meus Eventos</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {userEvents.map((event) => (
+                <EventCard key={event.id} {...event} isUserEvent={true} />
+              ))}
+            </div>
+            <Button onClick={() => setShowQRScanner(true)} className="mt-4">
+              <QrCode className="w-4 h-4 mr-2" />
+              Scan QR Code
+            </Button>
+          </div>
+        )}
+
+        <h2 className="text-2xl font-bold mb-4">Todos Eventos</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {paginatedEvents.map((event) => (
+            <EventCard key={event.id} {...event} />
+          ))}
+        </div>
+
+        {totalPages > 1 && (
+          <div className="flex justify-center mt-8">
+            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+              <Button
+                key={page}
+                onClick={() => setCurrentPage(page)}
+                variant={currentPage === page ? "default" : "outline"}
+                className="mx-1"
+              >
+                {page}
+              </Button>
+            ))}
+          </div>
+        )}
+
+        <Dialog open={showQRScanner} onOpenChange={setShowQRScanner}>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Scan QR Code</DialogTitle>
+            </DialogHeader>
+            <QRCodeScanner onScan={handleQRScan} />
+          </DialogContent>
+        </Dialog>
+
+        <Dialog open={showCertificate} onOpenChange={setShowCertificate}>
+          <DialogContent className="max-w-3xl">
+            <DialogHeader>
+              <DialogTitle>Certificado de Participação</DialogTitle>
+            </DialogHeader>
+            {certificateData && <AttendanceCertificate {...certificateData} />}
+            <DialogFooter>
+              <Button onClick={() => setShowCertificate(false)}>Close</Button>
+            </DialogFooter>
+          </DialogContent>
+        </Dialog>
+      </main>
     </div>
   );
 };
