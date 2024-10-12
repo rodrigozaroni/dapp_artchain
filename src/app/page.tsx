@@ -1,13 +1,23 @@
 "use client" // Componente Renderizador
 import React, { useState, useEffect } from 'react';
-import { Search, Calendar, MapPin, User, LogOut, QrCode, Filter } from 'lucide-react';
+import { Search, Calendar, MapPin, LogOut, QrCode, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Select } from '@/components/ui/select';
+// import { Select } from '@/components/ui/select';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 
+// Interface para as Props:
+interface EventCardProps {
+  title: string;
+  date: string;
+  location: string;
+  category: string;
+  imageUrl: string;
+  isUserEvent?: boolean;
+}
+
 // EventCard component definition
-const EventCard = ({ title, date, location, category, imageUrl, isUserEvent }) => (
+const EventCard = ({ title, date, location, category, imageUrl, isUserEvent }: EventCardProps) => (
   <div className={`bg-white rounded-lg shadow-md overflow-hidden ${isUserEvent ? 'border-2 border-blue-500' : ''}`}>
     <img src={imageUrl} alt={title} className="w-full h-48 object-cover" />
     <div className="p-4">
@@ -33,8 +43,14 @@ const EventCard = ({ title, date, location, category, imageUrl, isUserEvent }) =
   </div>
 );
 
+//
+
+interface QRCodeScannerProps {
+  onScan: (qrCode: string) => void;
+}
+
 // QRCodeScanner component definition
-const QRCodeScanner = ({ onScan }) => {
+const QRCodeScanner = ({ onScan }: QRCodeScannerProps) => {
   const [qrCode, setQrCode] = useState('');
 
   const handleScan = () => {
@@ -54,8 +70,15 @@ const QRCodeScanner = ({ onScan }) => {
   );
 };
 
+//
+interface AttendanceCertificateProps {
+  eventTitle: string;
+  attendeeName: string;
+  date: string;
+}
+
 // AttendanceCertificate component definition
-const AttendanceCertificate = ({ eventTitle, attendeeName, date }) => (
+const AttendanceCertificate = ({ eventTitle, attendeeName, date }: AttendanceCertificateProps) => (
   <div className="bg-white p-8 rounded-lg shadow-lg text-center">
     <h2 className="text-3xl font-bold mb-4">Certificado de Participação</h2>
     <p className="text-xl mb-4">Certificamos que o Aluno(a) </p>
