@@ -283,6 +283,9 @@ const ArtChainFrontend = () => {
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (username === "artchain" && password === "artchain") {
+  // Conecte ao Metamask
+
+
       setIsLoggedIn(true);
       setUserEvents(mockUserEvents);
     } else {
