@@ -283,8 +283,7 @@ const ArtChainFrontend = () => {
   const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (username === "artchain" && password === "artchain") {
-  // Conecte ao Metamask
-
+  // Conecte ao Metamask => Aqui devemos conectar ao Metamask 
 
       setIsLoggedIn(true);
       setUserEvents(mockUserEvents);
@@ -457,6 +456,8 @@ const ArtChainFrontend = () => {
                 <EventCard key={event.id} {...event} isUserEvent={true} />
               ))}
             </div>
+
+            // Quando o usuário escanear qq coisa devemos mintar o bloco que ele escolheu
             <Button onClick={() => setShowQRScanner(true)} className="mt-4">
               <QrCode className="w-4 h-4 mr-2" />
               Scan QR Code
